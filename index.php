@@ -6,9 +6,16 @@ require_once(__DIR__  . '/Routes.php');
 $req = new \Api\Util\Request();
 $routes = new Routes();
 
+$builder = new DI\ContainerBuilder();
+$container = $builder->build();
+
+$routes->get("/tradeMessage", array('Api\Controller\TradeMessageController', 'getMessages'));
+$routes->post("/tradeMessage", array('Api\Controller\TradeMessageController', 'addMessage'));
+
 try{
     $handler = $routes->getHandler($req->getPath(), $req->getType());
-    $controller = new $handler[0];
+    //$controller = new $handler[0];
+    $controller = $container->get($handler[0]);
     $res = $controller->$handler[1]($req);
     echo json_encode($res);
 } catch (Exception $ex) {
