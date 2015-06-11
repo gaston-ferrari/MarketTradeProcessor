@@ -24,7 +24,7 @@ class TradeMessageController {
         }
     }
 
-    function getAllMessages($request) {
+    function getMessages($request) {
         $messages = $this->messageModel->getAllMessages($id);
         return $messages;
     }
