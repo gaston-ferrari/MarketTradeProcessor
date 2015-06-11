@@ -5,14 +5,14 @@ class TradeMessageControllerTest extends PHPUnit_Framework_TestCase {
     public function testGetMessage() {
         $model = new \Api\Model\TradeMessageModel();
         //userId, currencyFrom, currencyTo, amountSell, amountBuy, rate, timePlaced, originatingCountry
-        $messageId = $model->insert("134256", "EUR", "GBP", 1000, 747.10, 0.7471, "24-JAN-15 10:27:44", "FR");
+        $messageId = $model->insert("134256", "EUR", "GBP", 1000, 747.10, 0.7471, 1422106064, "FR");
 
-        $controller = new Api\Controller\TradeMessageController();
+        $controller = new Api\Controller\TradeMessageController($model);
         $req = new \Api\Util\Request();
         $req->setData(['id' => $messageId]);
         $message = $controller->getMessage($req);
-        $this->assertEquals('134256', $message['userId']);
-        $this->assertEquals(1000, $message['amountBuy']);
+        $this->assertEquals('134256', $message['user_id']);
+        $this->assertEquals(1000, $message['amount_sell']);
 
         $req->setData(['id' => "i"]);
         $threwException = false;
@@ -22,18 +22,22 @@ class TradeMessageControllerTest extends PHPUnit_Framework_TestCase {
             $threwException = true;
         }
         $this->assertEquals(true, $threwException);
+
+        $model->delete($messageId);
     }
 
     public function testInsertMessage() {
         $model = new \Api\Model\TradeMessageModel();
         $prevAmount = count($model->getAllMessages());
-        $controller = new Api\Controller\TradeMessageController();
+        $controller = new Api\Controller\TradeMessageController($model);
         $req = new \Api\Util\Request();
         $messageData = ['userId' => '134256', 'currencyFrom' => 'EUR', 'currencyTo' => 'GBP', 'amountSell' => 1000
             , 'amountBuy' => 747.10, 'rate' => 0.7471, 'timePlaced' => '24-JAN-15 10:27:44', 'originatingCountry' => 'FR'];
         $req->setData($messageData);
+        $messageId = FALSE;
         try {
-            $controller->addMessage($req);
+            $res = $controller->addMessage($req);
+            $messageId = $res["messageId"];
         } catch (Exception $e) {
             $this->assertEquals("It didn't crash", "It crashed");
         }
@@ -50,6 +54,10 @@ class TradeMessageControllerTest extends PHPUnit_Framework_TestCase {
             $threwException = true;
         }
         $this->assertEquals(true, $threwException);
+
+        if ($messageId) {
+            $model->delete($messageId);
+        }
     }
 
 }
