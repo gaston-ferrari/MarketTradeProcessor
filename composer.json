@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        "psr-0": {
+            "Api": "src/"
+        }
+    },
+
+    "require": {
+        "phpunit/phpunit": "3.7.*"
+    }
+}
