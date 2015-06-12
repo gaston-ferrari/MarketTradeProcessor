@@ -42,9 +42,12 @@ class TradeMessageModel extends BaseModel {
         return $result;
     }
 
-    public function getAllMessages() {
-        $query = "SELECT * FROM trade_message";
-        $result = $this->fetchQuery($this->getConn(), $query);
+    public function getAllMessages($limit, $offset) {
+        $dbConn = $this->getConn();
+        $limit = mysqli_real_escape_string($dbConn, $limit);
+        $offset = mysqli_real_escape_string($dbConn, $offset);
+        $query = "SELECT * FROM trade_message LIMIT $limit OFFSET $offset";
+        $result = $this->fetchQuery($dbConn, $query);
         $this->closeConnection();
         return $result;
     }
