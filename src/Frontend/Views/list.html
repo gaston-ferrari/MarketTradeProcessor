@@ -23,7 +23,7 @@
                                 var count = params.count();
                                 var offset = (page - 1) * count;
                                 //$defer.resolve([{html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 1, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}, {html_url: "", number: 0, title: "sss", updated_at: "yesterday", user: {url: "", avatar_url: "", login: "e"}}]);
-                                $http.get("/trade/tradeMessage?count=" + count + "&offset=" + offset).
+                                $http.get("/trade/index.php/tradeMessage?count=" + count + "&offset=" + offset).
                                         success(function(data, status, headers, config) {
                                             if (data.length >= count) {
                                                 params.total(count * (page + 1));
@@ -41,7 +41,7 @@
 
                             }});
 
-                        var ssEvents = new EventSource('/trade/updateStream');
+                        var ssEvents = new EventSource('/trade/index.php/updateStream');
 
                         ssEvents.addEventListener('message', function(event) {
                             var eventData = JSON.parse(event.data);
