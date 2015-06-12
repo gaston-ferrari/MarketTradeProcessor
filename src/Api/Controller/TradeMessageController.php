@@ -27,8 +27,9 @@ class TradeMessageController {
     }
 
     function getMessages($request) {
+        $reqData = $request->getData();
         $count = isset($reqData['count']) ? $reqData['count'] : 10;
-        $offset = isset($reqData['offset']) ? $reqData['offset'] : 1;
+        $offset = isset($reqData['offset']) ? $reqData['offset'] : 0;
         $messages = $this->messageModel->getAllMessages($count, $offset);
         return $messages;
     }
