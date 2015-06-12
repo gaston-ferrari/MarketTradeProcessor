@@ -5,9 +5,11 @@ namespace Api\Controller;
 class TradeMessageController {
 
     private $messageModel;
+    private $redis;
 
-    public function __construct(\Api\Model\TradeMessageModel $messageModel) {
+    public function __construct(\Api\Model\TradeMessageModel $messageModel, \Predis\Client $redis) {
         $this->messageModel = $messageModel;
+        $this->redis = $redis;
     }
 
     function getMessage($request) {
@@ -25,7 +27,7 @@ class TradeMessageController {
     }
 
     function getMessages($request) {
-        $messages = $this->messageModel->getAllMessages($id);
+        $messages = $this->messageModel->getAllMessages();
         return $messages;
     }
 
@@ -51,6 +53,7 @@ class TradeMessageController {
 
         $res = $this->messageModel->insert($userId, $currencyFrom, $currencyTo, $amountSell, $amountBuy, $rate, $timePlaced, $originatingCountry);
         if ($res) {
+            $this->redis->publish("messageUpdate", json_encode($this->messageModel->getMessage($res)));
             return ["messageId" => $res];
         } else {
             throw new \Exception("There was an error inserting the address.");

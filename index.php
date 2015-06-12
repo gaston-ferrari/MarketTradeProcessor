@@ -11,6 +11,7 @@ $container = $builder->build();
 
 $routes->get("/tradeMessage", array('Api\Controller\TradeMessageController', 'getMessages'));
 $routes->post("/tradeMessage", array('Api\Controller\TradeMessageController', 'addMessage'));
+$routes->get("/updateStream", array('Api\Controller\SSEController', 'updateStream'));
 
 try{
     $handler = $routes->getHandler($req->getPath(), $req->getType());
